@@ -81,7 +81,7 @@ const App = ({ lesson, loadLesson, classes }) => {
       <div style={{ margin: '1em 4em' }}>
          <Grid container spacing={16}>
             {
-               lesson && lesson.events && lesson.events.length && (
+               lesson && lesson.events && lesson.events.filter(evt => evt.type === 'SECONDARY_FEEDBACK' || evt.type === 'FEEDBACK').length && (
                   <Grid item xs={12}>
                      <Typography gutterBottom variant="headline" component="h4">
                            Live stats
