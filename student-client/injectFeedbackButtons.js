@@ -1,11 +1,12 @@
 (function () {
-  var awsInject = document.createElement('script');
+  let awsInject = document.createElement('script');
   awsInject.src = "https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.320.0/aws-sdk.min.js";
   document.head.appendChild(awsInject);
-  var scriptInject = document.createElement('script');
-  var styleInject = document.createElement('style');
+  let scriptInject = document.createElement('script');
+  let styleInject = document.createElement('style');
   scriptInject.innerHTML = `
 
+  var hints = ["Hint #1", "Hint #2", "Hint #3"];
   window.sendSqsMessage = message => new Promise((resolve, reject) => {
     const credentials = new AWS.Credentials({ 'accessKeyId': 'AKIAICE3VMSM6HLCQHMA', 'secretAccessKey': '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' });
     AWS.config.credentials = credentials;
@@ -71,7 +72,8 @@
         window.currentHint = 0;
       }
     }
-  }
+  };
+
   refreshCurrentState();
 
     function displayHintAndSendEvent() {
@@ -101,7 +103,7 @@
       x.appendChild(p);
 
       // After 3 seconds, remove the show class from DIV
-      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 100000);
+      setTimeout(function(){ x.removeChild(p); x.className = x.className.replace("show", ""); }, 3000);
     };
 
     function displayCheckResultAndSendEvent() {
@@ -173,7 +175,6 @@
          to {bottom: 0; opacity: 0;}
       }
   `
-
 
   document.head.appendChild(scriptInject);
   document.head.appendChild(styleInject);
