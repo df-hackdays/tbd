@@ -9,6 +9,9 @@
      "js": ["injectFeedbackButtons.js"]
    }
  ],
+ "browser_action": {
+  "default_icon": "clc.png"
+  },
  "web_accessible_resources": ["question.svg", "check.svg"],
  "manifest_version": 2
 }
