@@ -1,8 +1,9 @@
-(function() {
+(function () {
   var awsInject = document.createElement('script');
   awsInject.src = "https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.320.0/aws-sdk.min.js";
   document.head.appendChild(awsInject);
   var scriptInject = document.createElement('script');
+  var styleInject = document.createElement('style');
   scriptInject.innerHTML = `
 
   window.sendSqsMessage = message => new Promise((resolve, reject) => {
@@ -88,7 +89,14 @@
       var hint = window.currentActivity.hints[window.currentHint % window.currentActivity.hints.length];
       window.currentHint++;
 
-      alert(hint);
+      // Get the snackbar DIV
+      var x = document.getElementById("snackbar");
+
+      // Add the "show" class to DIV
+      x.className = "show";
+
+      // After 3 seconds, remove the show class from DIV
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 100000);
     };
 
     function displayCheckResultAndSendEvent() {
@@ -113,21 +121,32 @@
   `;
   document.head.appendChild(scriptInject);
 
-  	var div = document.createElement('div');
-  	div.style.display = 'flex';
-  	div.style.width = '200px';
-    div.style.align = 'center';
-    div.style.verticalAlign = 'middle';
+  document.head.appendChild(scriptInject);
+  document.head.appendChild(styleInject);
 
-    div.innerHTML = `
-      <script>
-      </script>
-      <div style="display: block;">
-        <div style="height: calc(50% - 200px); width: 100px;"></div>
-        <button onclick='displayHintAndSendEvent()' aria-label="Get Some Help" style="width: 100px; height: 100px; background-color: yellow; margin: 50px;" class="action-menu_button_1qbot action-menu_main-button_3ccfy" data-for="tooltip-0.8513344296356962" data-tip="Get Some Help" currentitem="false"><img style="width: 50px; height: 50px;" class="action-menu_main-icon_1ktMc" draggable="false" src="` + chrome.extension.getURL('question.svg') + `"></button>
-        <button onclick='displayCheckResultAndSendEvent()' aria-label="All Done!" style="width: 100px; height: 100px; background-color: mediumSeaGreen; margin: 50px;" class="action-menu_button_1qbot action-menu_main-button_3ccfy" data-for="tooltip-0.8513344296356962" data-tip="All Done!" currentitem="false"><img style="width: 50px; height: 50px;" class="action-menu_main-icon_1ktMc" draggable="false" src="` + chrome.extension.getURL('check.svg') + `"></button>
-      </div>
-      `;
+  var div = document.createElement('div');
+  div.style.display = 'flex';
+  div.style.width = '200px';
+  div.style.align = 'center';
+  div.style.verticalAlign = 'middle';
 
-  	document.getElementsByClassName('gui_flex-wrapper_uXHkj box_box_2jjDp')[0].appendChild(div);
-   })();
+  div.innerHTML = `
+     <script>
+     </script>
+     <div style="display: block;">
+       <div style="height: calc(50% - 200px); width: 100px;"></div>
+       <button onclick='displayHintAndSendEvent()' aria-label="Get Some Help" style="width: 100px; height: 100px; background-color: gold; margin: 50px;" class="action-menu_button_1qbot action-menu_main-button_3ccfy" data-for="tooltip-0.8513344296356962" data-tip="Get Some Help" currentitem="false"><img style="width: 50px; height: 50px;" class="action-menu_main-icon_1ktMc" draggable="false" src="` + chrome.extension.getURL('question.svg') + `"></button>
+       <button onclick='displayCheckResultAndSendEvent()' aria-label="All Done!" style="width: 100px; height: 100px; background-color: limeGreen; margin: 50px;" class="action-menu_button_1qbot action-menu_main-button_3ccfy" data-for="tooltip-0.8513344296356962" data-tip="All Done!" currentitem="false"><img style="width: 50px; height: 50px;" class="action-menu_main-icon_1ktMc" draggable="false" src="` + chrome.extension.getURL('check.svg') + `"></button>
+     </div>
+     `;
+
+  document.getElementsByClassName('gui_flex-wrapper_uXHkj box_box_2jjDp')[0].appendChild(div);
+
+  var hint = document.createElement('div');
+  hint.innerHTML = `
+     <div id="snackbar">Some text some message..</div>
+
+  `
+  document.getElementsByClassName('gui_flex-wrapper_uXHkj box_box_2jjDp')[0].appendChild(hint);
+
+})();
