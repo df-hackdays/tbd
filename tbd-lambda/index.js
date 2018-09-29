@@ -31,7 +31,9 @@ const handleMessage = message => {
         case 'newLesson':
             return writeDoc(message.id, newLesson(message.id));
         case 'FEEDBACK':
-            return reduceStudentEvent(message).then(function (doc) { writeDoc(message.lessonId, doc); });
+            return reduceStudentEvent(message).then(doc => writeDoc(message.lessonId, doc));
+        case 'NEXT_ACTIVITY':
+            return handleNextActivity(message);
         default:
             return new Promise(
                 (resolve, reject) => reject(new Error('unknown message type'))
@@ -75,6 +77,30 @@ const writeDoc = (key, doc) => new Promise((resolve, reject) => {
             }
         }
     );
+});
+
+const handleNextActivity = message => readDoc(message.lessonId).then(doc => {
+    var time = new Date();
+    message.timestamp = time.toJSON();
+    doc.events.push(message);
+
+    var nextIdx = -1;
+    doc.activities = doc.activities.map(
+        (act, idx) => {
+            if (act.state === 'CURRENT') {
+                nextIdx = (idx + 1) % doc.activities.length;
+                act.state = 'COMPLETED';
+            }
+
+            return act;
+        }
+    );
+
+    nextIdx >= 0
+       && nextIdx < doc.activities.length
+       && (doc.activities[nextIdx].state = 'CURRENT');
+
+   return writeDoc(message.lessonId, doc);
 });
 
 const reduceStudentEvent = message => {
@@ -212,4 +238,4 @@ const newLesson = id => {
   template.activities[0].startTime = new Date().toJSON();
 
   return template;
-}
+};
