@@ -90,16 +90,23 @@ const scatterStudents = (students, elem) => {
                if (!_draggingTarget && _elemMap[student.id]) {
                   // start dragging
                   _draggingTarget = _elemMap[student.id];
-                  _dragStart = { x: event.clientX, y: event.clientY };
+                  _dragStart = {
+                     x: event.clientX,
+                     y: event.clientY,
+                     startOffset:  window._sittingMap[student.id]
+                  };
 
                   const
                      f = event => {
                         if (_draggingTarget && _dragStart) {
-                           const offset = window._sittingMap[student.id];
+                           const
+                              offset = window._sittingMap[student.id],
+                              dispX = event.clientX - _dragStart.x,
+                              dispY = event.clientY - _dragStart.y;
 
                            window._sittingMap[student.id] = {
-                              offsetX: event.clientX - _dragStart.x,
-                              offsetY: event.clientY - _dragStart.y,
+                              offsetX: _dragStart.startOffset.offsetX + dispX,
+                              offsetY: _dragStart.startOffset.offsetY + dispY
                            };
 
                            _elemMap[student.id].style.left = window._sittingMap[student.id].offsetX + 'px';
