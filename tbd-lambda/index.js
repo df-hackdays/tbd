@@ -31,7 +31,7 @@ const handleMessage = message => {
         case 'newLesson':
             return writeDoc(message.id, newLesson(message.id));
         case 'FEEDBACK':
-            return writeDoc(message.lessonId, reduceStudentEvent(message));
+            return reduceStudentEvent(message).then(function (doc) { writeDoc(message.lessonId, doc); });
         default:
             return new Promise(
                 (resolve, reject) => reject(new Error('unknown message type'))
@@ -94,7 +94,7 @@ const reduceStudentEvent = message => {
     doc.students[message.userId].overallStudyFactor = studentOverallScore;
     doc.students[message.userId].activityFeedbackState = message.status;
 
-    return writeDoc(message.lessonId, doc);
+    return doc;
   });
 }
 
