@@ -190,49 +190,49 @@ const newLesson = id => {
          name: 'Little Tommy & Sarah',
          activityFeedbackState: "",
          activityStudyFactor: 0.8,
-         overallStudyFactor: 0.2
+         overallStudyFactor: 0.8
       },
       'student_id_2': {
          id: 'student_id_2',
          name: 'Bill & Blake',
-         activityFeedbackState: "NEED_HELP",
-         activityStudyFactor: .4,
-         overallStudyFactor: .8
+         activityFeedbackState: "",
+         activityStudyFactor: 0.8,
+         overallStudyFactor: 0.8
       },
       'student_id_3': {
          id: 'student_id_3',
          name: 'Morgan & Jane',
-         activityFeedbackState: "COMPLETED",
-         activityStudyFactor: .5,
-         overallStudyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 0.8,
+         overallStudyFactor: 0.8
       },
       'student_id_4': {
          id: 'student_id_4',
          name: 'Jill & Jack',
-         activityFeedbackState: "COMPLETED",
-         activityStudyFactor: 0.99,
-         overallStudyFactor: 0.01
+         activityFeedbackState: "",
+         activityStudyFactor: 0.8,
+         overallStudyFactor: 0.8
       },
       'student_id_5': {
          id: 'student_id_5',
          name: 'Rex & Amanda',
          activityFeedbackState: "",
-         activityStudyFactor: 0.3,
-         overallStudyFactor: 0.5
+         activityStudyFactor: 0.8,
+         overallStudyFactor: 0.8
       },
       'student_id_6': {
          id: 'student_id_6',
          name: 'Bohdan & Meghana',
-         activityFeedbackState: "COMPLETED",
-         activityStudyFactor: 1.0,
-         overallStudyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 0.8,
+         overallStudyFactor: 0.8
       },
       'student_id_7': {
          id: 'student_id_7',
          name: 'Chen & Yuri',
-         activityFeedbackState: "NEED_HELP",
-         activityStudyFactor: 0.0,
-         overallStudyFactor: 0.0
+         activityFeedbackState: "",
+         activityStudyFactor: 0.8,
+         overallStudyFactor: 0.8
       }
     }
   };
