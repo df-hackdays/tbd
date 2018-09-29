@@ -3,9 +3,8 @@
   awsInject.src = "https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.320.0/aws-sdk.min.js";
   document.head.appendChild(awsInject);
   let scriptInject = document.createElement('script');
-  let styleInject = document.createElement('style');
   scriptInject.innerHTML = `
-  
+
   window.sendSqsMessage = message => new Promise((resolve, reject) => {
     const credentials = new AWS.Credentials({ 'accessKeyId': 'AKIAICE3VMSM6HLCQHMA', 'secretAccessKey': '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' });
     AWS.config.credentials = credentials;
@@ -95,10 +94,10 @@
 
       // Add the "show" class to DIV
       x.className = "show";
-      
+
       var p = document.createElement('p');
       p.textContent = hint;
-        
+
       x.appendChild(p);
 
       // After 3 seconds, remove the show class from DIV
@@ -125,9 +124,34 @@
       alert(success ? 'Congratulations! Your solution works!' : 'Oops! You may have to try something else! Your solution doesn\\'t quite work');
   };
   `;
+    document.head.appendChild(scriptInject);
 
+    let dragEventScriptInject = document.createElement('script');
+    dragEventScriptInject.innerHTML = `
+      document.onmouseup = function (event) {
+        document.querySelectorAll('.blocklyDraggable').forEach(function (e) {
+          var r = e.getBoundingClientRect();
+          if (r.x < event.clientX && event.clientX < r.x + r.width && r.y < event.clientY && event.clientY < r.y + r.height) {
+
+              const message = {
+                type: 'SECONDARY_FEEDBACK',
+                status: 'MINOR_EVENT',
+                userId: window.user,
+                lessonId: window.lesson,
+                activityId: window.currentActivity.id
+              };
+
+              sendSqsMessage(message);
+
+          }
+        });
+      }
+    `;
+      document.head.appendChild(dragEventScriptInject);
+
+    let styleInject = document.createElement('style');
    styleInject.innerHTML = `
-  
+
       /* The snackbar - position it at the bottom and in the middle of the screen */
       #snackbar {
          visibility: hidden; /* Hidden by default. Visible on click */
@@ -147,7 +171,7 @@
       /* Show the snackbar when clicking on a button (class added with JavaScript) */
       #snackbar.show {
          visibility: visible; /* Show the snackbar */
-         /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+         /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
          However, delay the fade out process for 2.5 seconds */
          -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
          animation: fadein 0.5s, fadeout 0.5s 2.5s;
@@ -155,7 +179,7 @@
 
       /* Animations to fade the snackbar in and out */
       @-webkit-keyframes fadein {
-         from {bottom: 0; opacity: 0;} 
+         from {bottom: 0; opacity: 0;}
          to {bottom: 30px; opacity: 1;}
       }
 
@@ -165,7 +189,7 @@
       }
 
       @-webkit-keyframes fadeout {
-         from {bottom: 30px; opacity: 1;} 
+         from {bottom: 30px; opacity: 1;}
          to {bottom: 0; opacity: 0;}
       }
 
@@ -175,7 +199,6 @@
       }
   `;
 
-  document.head.appendChild(scriptInject);
   document.head.appendChild(styleInject);
 
   var div = document.createElement('div');
