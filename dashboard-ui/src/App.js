@@ -13,6 +13,8 @@ import { fetchLesson, sendMessage } from './utils/awscli';
 
 import ActivityList from './ActivityList';
 import SittingMap from './SittingMap';
+import PieChart from './PieChart';
+import BarChart from './BarChart';
 
 const mapStateToProps = state => ({
    lesson: state.lesson
@@ -49,7 +51,7 @@ const App = ({ lesson, loadLesson, classes }) => {
 
       _reload_task_id = setInterval(
          () => loadLesson(lessonId),
-         5000 // TODO: reduce to 2 to 5 seconds
+         2500 // TODO: reduce to 2 to 5 seconds
       );
 
       sendMessage({
@@ -72,16 +74,31 @@ const App = ({ lesson, loadLesson, classes }) => {
       <AppBar position="static">
          <Toolbar>
             <Typography variant="title" color="inherit">
-            Lesson: {lessonId}
+            Lesson: {lesson ? lesson.name : lessonId }
             </Typography>
         </Toolbar>
       </AppBar>
       <div style={{ margin: '1em 4em' }}>
          <Grid container spacing={16}>
-            <Grid item xs={12}>
-               <Paper square className={classes.paper}>time line chart</Paper>
-            </Grid>
+            {
+               lesson && lesson.events && lesson.events.length && (
+                  <Grid item xs={12}>
+                     <Typography gutterBottom variant="headline" component="h4">
+                           Live stats
+                     </Typography>
+                     <Paper square className={classes.paper} style={{
+                        display: 'flex'
+                     }}>
+                        <PieChart />
+                        <BarChart />
+                     </Paper>
+                  </Grid>
+               ) || null
+            }
             <Grid item xs={3}>
+               <Typography gutterBottom variant="headline" component="h4">
+                  Lesson Activities
+               </Typography>
                <ActivityList />
                <Button
                      variant="contained"
@@ -91,10 +108,10 @@ const App = ({ lesson, loadLesson, classes }) => {
                </Button>
             </Grid>
             <Grid item xs={9}>
+               <Typography gutterBottom variant="headline" component="h4">
+                  Classroom
+               </Typography>
                <Paper square className={classes.paper} style={{ minHeight: '550px' }}>
-                  <Typography gutterBottom variant="headline" component="h2">
-                     Classroom
-                  </Typography>
                   <SittingMap />
                </Paper>
             </Grid>

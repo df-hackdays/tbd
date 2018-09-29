@@ -22,11 +22,10 @@ class ActivityList extends React.Component {
    render() {
       const { classes, activities } = this.props;
 
-      return <Paper square>
+      return <Paper>
          <List
             dense
             component="nav"
-            subheader={<ListSubheader component="div">Lesson Activities:</ListSubheader>}
          >
             {
                activities.map((activity, idx) => {
