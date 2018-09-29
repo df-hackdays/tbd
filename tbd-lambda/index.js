@@ -82,23 +82,53 @@ const newLesson = id => {
     name: 'CLC K12 Summer Workshop Rainbow and Dragons',
     activities: [
       {
+        id: 0,
         name: 'Introducing the Dragon',
+        hints: [
+          "Clicking and dragging an element from the left panel to the middle panel will add code to your game!",
+          "Have you considered creating a variable that is called Dragon?",
+          "If your current code doesn't work try looking at the problem a different way."
+        ],
         state: 'CURRENT'
       },
       {
+        id: 1,
         name: 'Add a Rainbow',
+        hints: [
+          "This problem is very similar to the last one, but with a new variable type!",
+          "Have you considered creating a variable that is called Rainbow?",
+          "If your current code doesn't work try looking at the problem a different way."
+        ],
         state: 'UNSTARTED'
       },
       {
+        id: 2,
         name: 'The Dragons Multiply',
+        hints: [
+          "Clicking and dragging an element from the left panel to the middle panel will add code to your game!",
+          "Have you considered creating a variable that is called Dragon?",
+          "If your current code doesn't work try looking at the problem a different way."
+        ],
         state: 'UNSTARTED'
       },
       {
+        id: 3,
         name: 'Dragons Breathe Rainbows',
+        hints: [
+          "Clicking and dragging an element from the left panel to the middle panel will add code to your game!",
+          "Have you considered creating a variable that is called Dragon?",
+          "If your current code doesn't work try looking at the problem a different way."
+        ],
         state: 'UNSTARTED'
       },
       {
+        id: 4,
         name: 'Loop the Rainbows',
+        hints: [
+          "Clicking and dragging an element from the left panel to the middle panel will add code to your game!",
+          "Have you considered creating a variable that is called Dragon?",
+          "If your current code doesn't work try looking at the problem a different way."
+        ],
         state: 'UNSTARTED'
       }
     ],
