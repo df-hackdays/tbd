@@ -1,4 +1,6 @@
-const AWS = require('aws-sdk');
+const
+   AWS = require('aws-sdk'),
+   axios = require('axios');
 
 const credentials = new AWS.Credentials({
    accessKeyId: 'AKIAICE3VMSM6HLCQHMA',
@@ -13,7 +15,7 @@ const
       QueueName: 'tbd-event-intake'
    };
 
-exports.sendMessage = message => new Promise((resolve, reject) => {
+export const sendMessage = message => new Promise((resolve, reject) => {
    sqs.getQueueUrl(params, (err, data) => {
       if (err) {
          reject(err);
@@ -36,25 +38,6 @@ exports.sendMessage = message => new Promise((resolve, reject) => {
    });
 });
 
-exports.sendMessage({
-   type: 'newLesson',
-   id: '2',
-   name: 'CLC K12 Summer Workshop Rainbow and Dragons',
-   activities: [
-      {
-         id: '2',
-         name: 'Basics of variables',
-         feedbacks: [
-            {
-               state: 'ok',
-               student: 'student_id_1'
-            }
-         ]
-      }
-   ],
-   students: {
-      'student_id_1': {
-         id: 'student_id_1'
-      }
-   }
-});
+export const fetchLesson = lessonId => axios.get(
+   `https://s3.ca-central-1.amazonaws.com/hack-tbd/${lessonId}`
+).then(resp => resp.data);
