@@ -51,6 +51,11 @@ const App = ({ lesson, loadLesson, classes }) => {
          () => loadLesson(lessonId),
          5000 // TODO: reduce to 2 to 5 seconds
       );
+
+      sendMessage({
+         type: 'CREATE_LESSON_IF_ABSENT',
+         lessonId: lessonId
+      });
    }
 
    const nextActivity = lesson => sendMessage({

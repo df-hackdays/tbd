@@ -28,16 +28,18 @@ const handleMessage = message => {
 
     // persist to s3
     switch (message.type) {
-        case 'newLesson':
-            return writeDoc(message.id, newLesson(message.id));
-        case 'FEEDBACK':
-            return reduceStudentEvent(message).then(doc => writeDoc(message.lessonId, doc));
-        case 'NEXT_ACTIVITY':
-            return handleNextActivity(message);
-        default:
-            return new Promise(
-                (resolve, reject) => reject(new Error('unknown message type'))
-            );
+      case 'CREATE_LESSON_IF_ABSENT':
+         return readDoc(message.id).catch(
+            () => writeDoc(message.id, newLesson(message.id))
+         );
+      case 'FEEDBACK':
+         return reduceStudentEvent(message).then(doc => writeDoc(message.lessonId, doc));
+      case 'NEXT_ACTIVITY':
+         return handleNextActivity(message);
+      default:
+         return new Promise(
+               (resolve, reject) => reject(new Error('unknown message type'))
+         );
     }
 };
 
@@ -187,50 +189,50 @@ const newLesson = id => {
          id: 'student_id_1',
          name: 'Little Tommy & Sarah',
          activityFeedbackState: "",
-         activityStudyFactor: 1.0,
-         overallStudyFactor: 1.0
+         activityStudyFactor: 0.8,
+         overallStudyFactor: 0.2
       },
       'student_id_2': {
          id: 'student_id_2',
          name: 'Bill & Blake',
-         activityFeedbackState: "",
-         activityStudyFactor: 1.0,
-         overallStudyFactor: 1.0
+         activityFeedbackState: "NEED_HELP",
+         activityStudyFactor: .4,
+         overallStudyFactor: .8
       },
       'student_id_3': {
          id: 'student_id_3',
          name: 'Morgan & Jane',
-         activityFeedbackState: "",
-         activityStudyFactor: 1.0,
+         activityFeedbackState: "COMPLETED",
+         activityStudyFactor: .5,
          overallStudyFactor: 1.0
       },
       'student_id_4': {
          id: 'student_id_4',
          name: 'Jill & Jack',
-         activityFeedbackState: "",
-         activityStudyFactor: 1.0,
-         overallStudyFactor: 1.0
+         activityFeedbackState: "COMPLETED",
+         activityStudyFactor: 0.99,
+         overallStudyFactor: 0.01
       },
       'student_id_5': {
          id: 'student_id_5',
          name: 'Rex & Amanda',
          activityFeedbackState: "",
-         activityStudyFactor: 1.0,
-         overallStudyFactor: 1.0
+         activityStudyFactor: 0.3,
+         overallStudyFactor: 0.5
       },
       'student_id_6': {
          id: 'student_id_6',
          name: 'Bohdan & Meghana',
-         activityFeedbackState: "",
+         activityFeedbackState: "COMPLETED",
          activityStudyFactor: 1.0,
          overallStudyFactor: 1.0
       },
       'student_id_7': {
          id: 'student_id_7',
          name: 'Chen & Yuri',
-         activityFeedbackState: "",
-         activityStudyFactor: 1.0,
-         overallStudyFactor: 1.0
+         activityFeedbackState: "NEED_HELP",
+         activityStudyFactor: 0.0,
+         overallStudyFactor: 0.0
       }
     }
   };
