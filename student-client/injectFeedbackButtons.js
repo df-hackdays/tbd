@@ -128,7 +128,7 @@
       x.className = "show";
       
       var p = document.createElement('p');
-      p.textContent = (success ? 'Congradulations! You made it!' : 'Oooops... something is wron. Try again');
+      p.textContent = (success ? 'Congratulations! You made it!' : 'Oooops, something is wrong. Try again');
       x.appendChild(p);
       
       x.style = 'background-color: ' + (success ? 'green' : 'red');
