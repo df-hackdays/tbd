@@ -30,7 +30,7 @@ class BarChart extends React.Component {
 }
 
 const reducerByAct = events => Object.values(
-   events.reduce((accu, evt, idx) => {
+   events.filter(evt => evt.type === 'SECONDARY_FEEDBACK').reduce((accu, evt, idx) => {
       if (!accu[evt.activityId]) {
          accu[evt.activityId] = {
             'activityId': evt.activityId,

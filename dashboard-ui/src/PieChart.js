@@ -15,9 +15,9 @@ class PieChart extends React.Component {
       const { events } = this.props;
 
       const data = [
-         { id: 'Completed', value: events.filter(e => e.status === "COMPLETED").length },
-         { id: 'Needed Help', value: events.filter(e => e.status === "NEED_HELP").length },
-         { id: 'Undecided', value: events.filter(e => e.status !== "NEED_HELP" && e.status !== "COMPLETED").length }
+         { id: 'Completed', value: events.filter(evt => evt.type === 'FEEDBACK').filter(e => e.status === "COMPLETED").length },
+         { id: 'Needed Help', value: events.filter(evt => evt.type === 'FEEDBACK').filter(e => e.status === "NEED_HELP").length },
+         { id: 'Undecided', value: events.filter(evt => evt.type === 'FEEDBACK').filter(e => e.status !== "NEED_HELP" && e.status !== "COMPLETED").length }
       ];
 
       return <div style={{ width: '300px', height: '160px', display: 'inline-block' }}>
