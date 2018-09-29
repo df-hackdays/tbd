@@ -31,6 +31,8 @@ const handleMessage = message => {
     switch (message.type) {
         case 'newLesson':
             return writeDoc(message.id, newLesson(message.id));
+        case 'FEEDBACK':
+            return writeDoc(message.lessonId, reduceStudentEvent(message));
         default:
             return new Promise(
                 (resolve, reject) => reject(new Error('unknown message type'))
@@ -75,6 +77,27 @@ const writeDoc = (key, doc) => new Promise((resolve, reject) => {
         }
     );
 });
+
+const reduceStudentEvent = message => {
+  return readDoc(message.lessonId).then(function (doc) {
+    var time = new Date();
+    message.timestamp = time.toJSON();
+    doc.events.push(message);
+
+    var studentEvents = doc.events.filter(event => event.status === 'NEED_HELP').filter(event => event.userId === message.userId);
+    var currentActivity = doc.activities.filter(act => act.state === 'CURRENT')[0].id;
+    var studentActivityEvents = studentEvents.filter(event => event.activityId === currentActivity);
+
+    var studentOverallScore = Math.max(1.0 - studentEvents.length * Math.floor(((time - new Date(doc.activities[0].startTime))/1000)/60) / 8, 0);
+    var studentActivityScore = Math.max(1.0 - studentActivityEvents.length * Math.floor(((time - new Date(doc.activities[currentActivity].startTime))/1000)/60) / 8, 0);
+
+    doc.students[message.userId].activityStudyFactor = (message.status === 'COMPLETED') ? 1.0 : studentActivityScore;
+    doc.students[message.userId].overallStudyFactor = studentOverallScore;
+    doc.students[message.userId].activityFeedbackState = message.status;
+
+    return writeDoc(message.lessonId, doc);
+  });
+}
 
 const newLesson = id => {
   var template = {
@@ -132,41 +155,56 @@ const newLesson = id => {
         state: 'UNSTARTED'
       }
     ],
+    events: [],
     students: {
       'student_id_1': {
          id: 'student_id_1',
          name: 'Little Tommy & Sarah',
-         studyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 1.0,
+         overallStudyFactor: 1.0
       },
       'student_id_2': {
          id: 'student_id_2',
          name: 'Bill & Blake',
-         studyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 1.0,
+         overallStudyFactor: 1.0
       },
       'student_id_3': {
          id: 'student_id_3',
          name: 'Morgan & Jane',
-         studyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 1.0,
+         overallStudyFactor: 1.0
       },
       'student_id_4': {
          id: 'student_id_4',
          name: 'Jill & Jack',
-         studyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 1.0,
+         overallStudyFactor: 1.0
       },
       'student_id_5': {
          id: 'student_id_5',
          name: 'Rex & Amanda',
-         studyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 1.0,
+         overallStudyFactor: 1.0
       },
       'student_id_6': {
          id: 'student_id_6',
          name: 'Bohdan & Meghana',
-         studyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 1.0,
+         overallStudyFactor: 1.0
       },
       'student_id_7': {
          id: 'student_id_7',
          name: 'Chen & Yuri',
-         studyFactor: 1.0
+         activityFeedbackState: "",
+         activityStudyFactor: 1.0,
+         overallStudyFactor: 1.0
       }
     }
   };

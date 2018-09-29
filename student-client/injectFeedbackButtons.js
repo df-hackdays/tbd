@@ -46,39 +46,49 @@
   window.lesson = pathArgs[1];
   window.user = pathArgs[3];
 
+  function refreshCurrentState() {
+    var xmlhttp = new XMLHttpRequest();
+    var url = "https://s3.ca-central-1.amazonaws.com/hack-tbd/" + window.lesson;
+
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4) {
+        setTimeout(refreshCurrentState, 500);
+      }
+      if (this.readyState == 4 && this.status == 200) {
+          var data = JSON.parse(this.responseText);
+          parseLesson(data);
+      }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function parseLesson(lessonState) {
+      var currentActivity = lessonState.activities.filter(activity => activity.state === 'CURRENT')[0];
+
+      if (window.currentActivity === undefined || window.currentActivity.id !== currentActivity.id) {
+        window.currentActivity = currentActivity;
+        window.currentHint = 0;
+      }
+    }
+  }
+  refreshCurrentState();
 
     function displayHintAndSendEvent() {
-      var xmlhttp = new XMLHttpRequest();
-      var url = "https://s3.ca-central-1.amazonaws.com/hack-tbd/" + window.lesson;
-
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var data = JSON.parse(this.responseText);
-            parseAndShowHint(data);
-        }
-      };
-      xmlhttp.open("GET", url, true);
-      xmlhttp.send();
 
       const message = {
         type: 'FEEDBACK',
         status: 'NEED_HELP',
-        user: window.user
+        userId: window.user,
+        lessonId: window.lesson,
+        activityId: window.currentActivity.id
       };
 
       sendSqsMessage(message);
 
-      function parseAndShowHint(lessonState) {
-        if (window.currentHint === undefined) {
-          window.currentHint = Array.apply(null, Array(lessonState.activities.length)).map(Number.prototype.valueOf,0);
-        }
+      var hint = window.currentActivity.hints[window.currentHint % window.currentActivity.hints.length];
+      window.currentHint++;
 
-        var currentActivity = lessonState.activities.filter(activity => activity.state === 'CURRENT')[0];
-        var hint = currentActivity.hints[window.currentHint[currentActivity.id] % currentActivity.hints.length];
-        window.currentHint[currentActivity.id]++;
-
-        alert(hint);
-      }
+      alert(hint);
     };
 
     function displayCheckResultAndSendEvent() {
@@ -91,7 +101,9 @@
       const message = {
         type: 'FEEDBACK',
         status: (success) ? 'COMPLETED' : 'NEED_HELP',
-        user: window.user
+        userId: window.user,
+        lessonId: window.lesson,
+        activityId: window.currentActivity.id
       };
 
       sendSqsMessage(message);
