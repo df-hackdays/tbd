@@ -12,6 +12,7 @@ import { fetchLesson } from './utils/awscli';
 
 import ActivityList from './ActivityList';
 import Student from './Student';
+import SittingMap from './SittingMap';
 
 const mapStateToProps = state => ({
    lesson: state.lesson
@@ -72,6 +73,7 @@ const App = ({ loadLesson, classes }) => {
                   <Student name="John Smith" activityFeedbackState='NEED_HELP' activityStudyFactor={0.41} overallStudyFactor={0.41} />
                   <Student name="John Smith" activityFeedbackState='COMPLETED' activityStudyFactor={0.21} overallStudyFactor={0.61} />
                   <Student name="John Smith" activityFeedbackState='' activityStudyFactor={0.01} overallStudyFactor={0.81} />
+                  <SittingMap />
                </Paper>
             </Grid>
          </Grid>
