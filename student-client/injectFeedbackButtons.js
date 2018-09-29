@@ -121,7 +121,22 @@
 
       sendSqsMessage(message);
 
-      alert(success ? 'Congratulations! Your solution works!' : 'Oops! You may have to try something else! Your solution doesn\\'t quite work');
+      // Get the snackbar DIV
+      var x = document.getElementById("snackbar");
+
+      // Add the "show" class to DIV
+      x.className = "show";
+      
+      var p = document.createElement('p');
+      p.textContent = (success ? 'Congradulations! You made it!' : 'Oooops... something is wron. Try again');
+      x.appendChild(p);
+      
+      x.style = 'background-color: ' + (success ? 'green' : 'red');
+
+      // After 3 seconds, remove the show class from DIV
+      setTimeout(function(){ x.removeChild(p); 
+        x.style = 'background-color: #ff6348'; 
+        x.className = x.className.replace("show", ""); }, 5000);
   };
   `;
     document.head.appendChild(scriptInject);
@@ -160,7 +175,7 @@
          background-color: #ff6348; /* Black background color */
          color: #fff; /* White text color */
          text-align: center; /* Centered text */
-         border-radius: 2px; /* Rounded borders */
+         border-radius: 10px; /* Rounded borders */
          padding: 16px; /* Padding */
          position: fixed; /* Sit on top of the screen */
          z-index: 3; /* Add a z-index if needed */
