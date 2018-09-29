@@ -30,7 +30,7 @@ const handleMessage = message => {
     // persist to s3
     switch (message.type) {
         case 'newLesson':
-            return writeDoc(message.id, message);
+            return writeDoc(message.id, newLesson(message.id));
         default:
             return new Promise(
                 (resolve, reject) => reject(new Error('unknown message type'))
@@ -75,3 +75,74 @@ const writeDoc = (key, doc) => new Promise((resolve, reject) => {
         }
     );
 });
+
+const newLesson = id => {
+  var template = {
+    type: 'RainbowsAndDragons',
+    name: 'CLC K12 Summer Workshop Rainbow and Dragons',
+    activities: [
+      {
+        name: 'Introducing the Dragon',
+        state: 'CURRENT'
+      },
+      {
+        name: 'Add a Rainbow',
+        state: 'UNSTARTED'
+      },
+      {
+        name: 'The Dragons Multiply',
+        state: 'UNSTARTED'
+      },
+      {
+        name: 'Dragons Breathe Rainbows',
+        state: 'UNSTARTED'
+      },
+      {
+        name: 'Loop the Rainbows',
+        state: 'UNSTARTED'
+      }
+    ],
+    students: {
+      'student_id_1': {
+         id: 'student_id_1',
+         name: 'Little Tommy & Sarah',
+         studyFactor: 1.0
+      },
+      'student_id_2': {
+         id: 'student_id_2',
+         name: 'Bill & Blake',
+         studyFactor: 1.0
+      },
+      'student_id_3': {
+         id: 'student_id_3',
+         name: 'Morgan & Jane',
+         studyFactor: 1.0
+      },
+      'student_id_4': {
+         id: 'student_id_4',
+         name: 'Jill & Jack',
+         studyFactor: 1.0
+      },
+      'student_id_5': {
+         id: 'student_id_5',
+         name: 'Rex & Amanda',
+         studyFactor: 1.0
+      },
+      'student_id_6': {
+         id: 'student_id_6',
+         name: 'Bohdan & Meghana',
+         studyFactor: 1.0
+      },
+      'student_id_7': {
+         id: 'student_id_7',
+         name: 'Chen & Yuri',
+         studyFactor: 1.0
+      }
+    }
+  };
+
+  template.id = id;
+  template.activities[0].startTime = new Date().toJSON();
+
+  return template;
+}

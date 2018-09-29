@@ -1,10 +1,12 @@
 const AWS = require('aws-sdk');
+//const proxy = require('proxy-agent');
 
 const credentials = new AWS.SharedIniFileCredentials({
    profile: 'hack'
 });
 AWS.config.credentials = credentials;
 AWS.config.update({ region: 'ca-central-1' });
+//AWS.config.update({ httpOptions: { agent: proxy('a-proxy')}});
 
 const
    sqs = new AWS.SQS({ apiVersion: '2012-11-05' }),
@@ -37,7 +39,7 @@ exports.sendMessage = message => new Promise((resolve, reject) => {
 
 exports.sendMessage({
    type: 'newLesson',
-   id: '2',
+   id: '123',
    name: 'CLC K12 Summer Workshop Rainbow and Dragons',
    activities: [
       {
