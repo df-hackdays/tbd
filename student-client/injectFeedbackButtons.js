@@ -5,8 +5,7 @@
   let scriptInject = document.createElement('script');
   let styleInject = document.createElement('style');
   scriptInject.innerHTML = `
-
-  var hints = ["Hint #1", "Hint #2", "Hint #3"];
+  
   window.sendSqsMessage = message => new Promise((resolve, reject) => {
     const credentials = new AWS.Credentials({ 'accessKeyId': 'AKIAICE3VMSM6HLCQHMA', 'secretAccessKey': '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' });
     AWS.config.credentials = credentials;
@@ -98,12 +97,12 @@
       x.className = "show";
       
       var p = document.createElement('p');
-      p.textContent = "Hint hint hint";
+      p.textContent = hint;
         
       x.appendChild(p);
 
       // After 3 seconds, remove the show class from DIV
-      setTimeout(function(){ x.removeChild(p); x.className = x.className.replace("show", ""); }, 3000);
+      setTimeout(function(){ x.removeChild(p); x.className = x.className.replace("show", ""); }, 5000);
     };
 
     function displayCheckResultAndSendEvent() {
@@ -174,7 +173,7 @@
          from {bottom: 30px; opacity: 1;}
          to {bottom: 0; opacity: 0;}
       }
-  `
+  `;
 
   document.head.appendChild(scriptInject);
   document.head.appendChild(styleInject);
@@ -201,7 +200,7 @@
    hint.innerHTML = `
       <div id="snackbar"></div>
 
-  `
+  `;
   document.getElementsByClassName('gui_flex-wrapper_uXHkj box_box_2jjDp')[0].appendChild(hint);
 
 })();
