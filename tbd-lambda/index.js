@@ -34,6 +34,8 @@ const handleMessage = message => {
          );
       case 'FEEDBACK':
          return reduceStudentEvent(message).then(doc => writeDoc(message.lessonId, doc));
+      case 'SECONDARY_FEEDBACK':
+         return reduceStudentEvent(message).then(doc => writeDoc(message.lessonId, doc));
       case 'NEXT_ACTIVITY':
          return handleNextActivity(message);
       default:
@@ -115,9 +117,12 @@ const reduceStudentEvent = message => {
     var studentEvents = doc.events.filter(event => event.status === 'NEED_HELP').filter(event => event.userId === message.userId);
     var currentActivity = doc.activities.filter(act => act.state === 'CURRENT')[0].id;
     var studentActivityEvents = studentEvents.filter(event => event.activityId === currentActivity);
+    var studentDragEvents = doc.events.filter(event => event.status === 'MINOR_EVENT')
+      .filter(event => event.userId === message.userId)
+      .filter(event => event.activityId === currentActivity);
 
     var studentOverallScore = Math.max(1.0 - studentEvents.length / (((time.getTime() - new Date(doc.activities[0].startTime).getTime())/1000)/60) / 8, 0);
-    var studentActivityScore = Math.max(1.0 - studentActivityEvents.length / (((time.getTime() - new Date(doc.activities[currentActivity].startTime).getTime())/1000)/60) / 8, 0);
+    var studentActivityScore = Math.max(1.0 - studentActivityEvents.length / (((time.getTime() - new Date(doc.activities[currentActivity].startTime).getTime())/1000)/60) / 8 - studentDragEvents.length / (((time.getTime() - new Date(doc.activities[currentActivity].startTime).getTime())/1000)/60) / 16, 0);
 
     doc.students[message.userId].activityStudyFactor = (message.status === 'COMPLETED') ? 1.0 : studentActivityScore;
     doc.students[message.userId].overallStudyFactor = studentOverallScore;
