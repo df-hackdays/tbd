@@ -4,21 +4,20 @@ AWS.config.update({ region: 'ca-central-1' });
 const bucketName = 'hack-tbd';
 
 exports.handler = (event, context, callback) => {
-    Promise
-        .all(
-            (event.Records || [])
-                .map(record => JSON.parse(record.body))
-                .map(handleMessage)
-        )
-        .then(() => {
-            const response = {
-                statusCode: 204,
-                // body: ""
-            };
+   Promise
+       .all(
+           (event.Records || [])
+               .map(record => JSON.parse(record.body))
+               .map(handleMessage)
+       )
+       .catch(err => console.error(err))
+       .then(() => {
+           const response = {
+               statusCode: 200
+           };
 
-            callback(null, response);
-        })
-        .catch(callback);
+           callback(null, response);
+       });
 };
 
 const handleMessage = message => {
