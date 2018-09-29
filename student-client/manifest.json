@@ -1,0 +1,14 @@
+{
+ "name": "Scratch Feedback Extension",
+ "version": "1.0",
+ "description": "Enable gathering feedback from students",
+ "content_scripts": [
+   {
+     "matches": ["https://beta.scratch.mit.edu/*"],
+     "css": [],
+     "js": ["injectFeedbackButtons.js"]
+   }
+ ],
+ "web_accessible_resources": ["question.svg", "check.svg"],
+ "manifest_version": 2
+}
