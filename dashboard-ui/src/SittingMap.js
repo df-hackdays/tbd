@@ -130,9 +130,9 @@ const scatterStudents = (students, elem) => {
                id={student.id}
                position={student.position}
                name={student.name}
-               activityFeedbackState='COMPLETED'
-               activityStudyFactor={0.81}
-               overallStudyFactor={0}
+               activityFeedbackState={student.activityFeedbackState}
+               activityStudyFactor={student.activityStudyFactor}
+               overallStudyFactor={student.overallStudyFactor}
             />
          </div>;
       });
