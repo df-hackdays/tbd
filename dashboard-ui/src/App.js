@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 
 import { fetchLesson } from './utils/awscli';
 
+import ActivityList from './ActivityList';
+
 const mapStateToProps = state => ({
    lesson: state.lesson
 });
@@ -57,13 +59,13 @@ const App = ({ loadLesson, classes }) => {
       <div style={{ margin: '1em 4em' }}>
          <Grid container spacing={16}>
             <Grid item xs={12}>
-               <Paper className={classes.paper}>time line chart</Paper>
+               <Paper square className={classes.paper}>time line chart</Paper>
             </Grid>
             <Grid item xs={3}>
-               <Paper className={classes.paper}>activity list</Paper>
+               <ActivityList />
             </Grid>
             <Grid item xs={9}>
-               <Paper className={classes.paper}>sitting chart</Paper>
+               <Paper square className={classes.paper}>sitting chart</Paper>
             </Grid>
          </Grid>
       </div>
