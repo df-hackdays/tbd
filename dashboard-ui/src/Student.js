@@ -8,7 +8,7 @@ import CompleteIcon from '@material-ui/icons/ThumbUp';
 import WaitingIcon from '@material-ui/icons/HourglassEmpty';
 
 export default ({
-   id, name, position, activityStudyFactor, overallStudyFactor, activityFeedbackState
+   id, name, activityStudyFactor, overallStudyFactor, activityFeedbackState
 }) => {
 
    const styles = {
@@ -57,11 +57,9 @@ export default ({
          <div style={halfCircleStylesRight}></div>
       </div>
       <div style={{fontSize: '50%'}}>
-         <span style={{float: 'left', paddingLeft: '10px'}}>Current</span>
-         &nbsp;
-         <span style={{float: 'right', paddingRight: '10px'}}>Overall</span>
+         Current / Overall
       </div>
-      <div style={{lineHeight: 1.25}}>{name}</div>
+      <div style={{lineHeight: 1.25}}>[{name}]</div>
    </div>;
 };
 
