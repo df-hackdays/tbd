@@ -98,7 +98,8 @@ const handleNextActivity = message => readDoc(message.lessonId).then(doc => {
 
     nextIdx >= 0
        && nextIdx < doc.activities.length
-       && (doc.activities[nextIdx].state = 'CURRENT');
+       && (doc.activities[nextIdx].state = 'CURRENT')
+       && (doc.activities[nextIdx].startTime = new Date().toJSON());
 
    return writeDoc(message.lessonId, doc);
 });
@@ -113,8 +114,8 @@ const reduceStudentEvent = message => {
     var currentActivity = doc.activities.filter(act => act.state === 'CURRENT')[0].id;
     var studentActivityEvents = studentEvents.filter(event => event.activityId === currentActivity);
 
-    var studentOverallScore = Math.max(1.0 - studentEvents.length * Math.floor(((time - new Date(doc.activities[0].startTime))/1000)/60) / 8, 0);
-    var studentActivityScore = Math.max(1.0 - studentActivityEvents.length * Math.floor(((time - new Date(doc.activities[currentActivity].startTime))/1000)/60) / 8, 0);
+    var studentOverallScore = Math.max(1.0 - studentEvents.length / (((time.getTime() - new Date(doc.activities[0].startTime).getTime())/1000)/60) / 8, 0);
+    var studentActivityScore = Math.max(1.0 - studentActivityEvents.length / (((time.getTime() - new Date(doc.activities[currentActivity].startTime).getTime())/1000)/60) / 8, 0);
 
     doc.students[message.userId].activityStudyFactor = (message.status === 'COMPLETED') ? 1.0 : studentActivityScore;
     doc.students[message.userId].overallStudyFactor = studentOverallScore;
