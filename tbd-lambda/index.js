@@ -29,8 +29,8 @@ const handleMessage = message => {
     // persist to s3
     switch (message.type) {
       case 'CREATE_LESSON_IF_ABSENT':
-         return readDoc(message.id).catch(
-            () => writeDoc(message.id, newLesson(message.id))
+         return readDoc(message.lessonId).catch(
+            () => writeDoc(message.lessonId, newLesson(message.lessonId))
          );
       case 'FEEDBACK':
          return reduceStudentEvent(message).then(doc => writeDoc(message.lessonId, doc));
